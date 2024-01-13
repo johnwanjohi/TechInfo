@@ -1,0 +1,105 @@
+<div class="col-12">
+  <div class="card-dialog">
+    <div
+      class="card-header cursor-move"
+      cdkDrag
+      cdkDragRootElement=".cdk-overlay-pane"
+      cdkDragHandle
+    >
+      <h4 mat-dialog-title class="card-title">
+        {{ action.charAt(0).toUpperCase() + action.slice(1) }} Note
+      </h4>
+    </div>
+    <mat-dialog-content>
+      <div class="card-content">
+        <div class="card-body">
+          <form [formGroup]="myForm">
+            <div class="row">
+              <!-- SYSTEM TYPES -->
+              <div class="col-sm-12 col-md-12">
+                <div
+                  class="form-group"
+                  *ngIf="listOfSystemTypes as systemtypes"
+                >
+                  <label for="system_type">System Type</label>
+                  <ng-select
+                    #systemtype
+                    [items]="systemtypes"
+                    bindLabel="system_type"
+                    bindValue="id"
+                    formControlName="system_type"
+                    placeholder="Select System Type"
+                    [(ngModel)]="selected_systemtype"
+                    [readonly]="this.id !== undefined && this.id !== 0"
+                  >
+                  </ng-select>
+                  <small
+                    class="form-text text-muted danger"
+                    *ngIf="myForm.controls['system_type'].hasError('required')"
+                  >
+                    required
+                  </small>
+                </div>
+              </div>
+            </div>
+            <!-- NOTE -->
+            <div class="row">
+              <div class="col-12">
+                <div class="form-group mb-2">
+                  <label for="note">Note</label>
+                  <input
+                    type="text"
+                    placeholder=""
+                    class="form-control"
+                    formControlName="note"
+                  />
+                  <small
+                    class="form-text text-muted danger"
+                    *ngIf="myForm.controls['note'].hasError('required')"
+                  >
+                    required
+                  </small>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <!-- DESCRIPTION -->
+              <div class="col-12">
+                <div class="form-group mb-2">
+                  <label for="description">Description</label>
+                  <quill-editor
+                    name="description"
+                    formControlName="description"
+                    [style]="{ height: '200px' }"
+                  ></quill-editor>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </mat-dialog-content>
+    <!-- Action Buttons -->
+    <mat-dialog-actions class="d-flex justify-content-center">
+      <div class="form-row">
+        <!-- SAVE BUTTON -->
+        <div class="col-6 d-flex justify-content-end">
+          <button
+            type="button"
+            class="btn btn-primary"
+            [disabled]="myForm.invalid"
+            (click)="Submit()"
+          >
+            <i class="ft-check-square mr-1"></i>Save
+          </button>
+        </div>
+        <!-- CANCEL BUTTON -->
+        <div class="col-6 d-flex justify-content-start">
+          <button type="button" class="btn btn-secondary" (click)="Cancel()">
+            <i class="ft-x mr-1"></i>Cancel
+          </button>
+        </div>
+      </div>
+    </mat-dialog-actions>
+  </div>
+</div>

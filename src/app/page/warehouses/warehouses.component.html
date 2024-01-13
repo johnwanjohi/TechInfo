@@ -1,0 +1,100 @@
+<div class="row">
+  <div class="card">
+    <div class="card-content">
+      <div class="card-body">
+        <div class="table-responsive">
+          <mtx-grid
+            [data]="dataSource?.data"
+            #warehousesTable
+            [columns]="displayedColumns"
+            [showToolbar]="true"
+            [toolbarTemplate]="toolbarButtons"
+            [columnHideable]="columnHideable"
+            [columnHideableChecked]="columnHideableChecked"
+            [columnMovable]="columnMovable"
+            (columnChange)="log($event)"
+            [showColumnMenuButton]="false"
+            [showColumnMenuHeader]="true"
+            [columnMenuHeaderText]="'Show/Hide Columns'"
+            [ngClass]="'table table-hover'"
+            [pageSize]="5"
+            [pageSizeOptions]="[5]"
+            [loading]="isLoading"
+            [cellTemplate]="{ Action: actionTpl }"
+            (rowClick)="setWarehouse($event?.rowData?.id)"
+            [rowClassFormatter]="rowClassFormatter"
+            [expandable]="true"
+            [expansionTemplate]="expansionTpl"
+          >
+          </mtx-grid>
+
+          <!-- Toolbar Template -->
+          <ng-template #toolbarButtons>
+            <input type="hidden" value="{{ current_warehouse }}" />
+            <label class="font-medium-3 d-inline-block toolbaritem">
+              Warehouses
+            </label>
+            <div class="d-inline-block toolbaritem">
+              <button
+                *ngIf="user?.role == 'Admin' || user?.role == 'Manager'"
+                type="button"
+                class="btn btn-sm btn-outline-primary mr-1 mb-1"
+                (click)="openDialog('add',{warehouse_id})"
+              >
+                Add Warehouse
+              </button>
+              <button
+                type="button"
+                class="btn btn-sm btn-outline-primary mr-1 mb-1"
+                (click)="reset()"
+              >
+                Reset
+              </button>
+            </div>
+            <fieldset class="d-inline-block toolbaritem">
+              <input
+                id="ngx-MultiPurposeFilter-ref"
+                class="form-control form-action-right"
+                type="text"
+                placeholder="Filter ..."
+                (keyup)="applyFilter($event)"
+                [(ngModel)]="filter"
+                #input
+              />
+            </fieldset>
+          </ng-template>
+
+          <!-- Action Column Template -->
+          <ng-template
+            #actionTpl
+            let-warehouse
+            let-index="index"
+            let-col="colDef"
+          >
+            <div class="btn-group">
+              <button
+                type="button"
+                class="btn btn-sm btn-outline-info mr-1"
+                (click)="openDialog('edit', { id: warehouse.id })"
+                *ngIf="user.role === 'Admin' || user?.role === 'Manager'"
+              >
+                Edit
+              </button>
+              <button
+                type="button"
+                class="btn btn-sm btn-outline-danger mr-1"
+                (click)="openDialog('delete', { id: warehouse.id })"
+                *ngIf="user.role === 'Admin'"
+              >
+                Delete
+              </button>
+            </div>
+          </ng-template>
+          <ng-template #expansionTpl let-warehouse>
+            {{ warehouse?.address }}
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

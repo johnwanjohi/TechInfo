@@ -1,0 +1,95 @@
+<div class="row">
+  <div class="card">
+    <div class="card-content">
+      <div class="card-body">
+        <div class="table-responsive">
+          <mtx-grid
+            [data]="dataSource?.data"
+            #sitesTable
+            [columns]="displayedColumns"
+            [showToolbar]="true"
+            [toolbarTemplate]="toolbarButtons"
+            [columnHideable]="columnHideable"
+            [columnHideableChecked]="columnHideableChecked"
+            [columnMovable]="columnMovable"
+            (columnChange)="log($event)"
+            [showColumnMenuButton]="true"
+            [showColumnMenuHeader]="true"
+            [columnMenuHeaderText]="'Show/Hide Columns'"
+            [ngClass]="'table table-hover'"
+            [pageSize]="5"
+            [pageSizeOptions]="[5]"
+            [loading]="isLoading"
+            [cellTemplate]="{ Action: actionTpl }"
+            (rowClick)="
+              setSite($event?.rowData?.id, $event?.rowData?.customer_id)
+            "
+            [rowClassFormatter]="rowClassFormatter"
+          >
+          </mtx-grid>
+
+          <!-- Toolbar Template -->
+          <ng-template #toolbarButtons>
+            <label class="font-medium-3 d-inline-block toolbaritem">
+              Total Sites : <span>{{ total_sites }}</span>
+            </label>
+            <div class="d-inline-block toolbaritem">
+              <button
+                *ngIf="
+                  (user?.role === 'Admin' || user?.role === 'Manager') &&
+                  current_customer_id != 0
+                "
+                type="button"
+                class="btn btn-sm btn-outline-primary mr-1 mb-1"
+                [disabled]="user?.role !== 'Admin' && user?.role !== 'Manager'"
+                (click)="openDialog('Add', {customer_id})"
+              >
+                Add Site
+              </button>
+              <button
+                type="button"
+                class="btn btn-sm btn-outline-primary mr-1 mb-1"
+                (click)="reset()"
+              >
+                Reset
+              </button>
+            </div>
+            <fieldset class="d-inline-block toolbaritem">
+              <input
+                id="ngx-MultiPurposeFilter-ref"
+                class="form-control form-action-right"
+                type="text"
+                placeholder="Filter ..."
+                (keyup)="applyFilter($event)"
+                [(ngModel)]="filter"
+                #input
+              />
+            </fieldset>
+          </ng-template>
+
+          <!-- Action Column Template -->
+          <ng-template #actionTpl let-site let-index="index" let-col="colDef">
+            <div class="btn-group">
+              <button
+                type="button"
+                class="btn btn-sm btn-outline-info mr-1"
+                (click)="openDialog('edit', { id: site.id })"
+                *ngIf="user.role === 'Admin' || user?.role === 'Manager'"
+              >
+                Edit
+              </button>
+              <button
+                type="button"
+                class="btn btn-sm btn-outline-danger mr-1"
+                (click)="openDialog('delete', { id: site.id })"
+                *ngIf="user.role === 'Admin'"
+              >
+                Delete
+              </button>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

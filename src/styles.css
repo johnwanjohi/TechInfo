@@ -1,0 +1,59 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import "~@ng-select/ng-select/themes/default.theme.css";
+
+
+
+
+
+.mat-column-edit {
+    padding: 0px;
+    width: 4%;
+}
+
+.mat-column-delete {
+    width: 4%;
+}
+
+.mat-column-id {
+    width: 2%;
+}
+
+.mat-column-name {
+    width: 45%;
+}
+
+.mat-column-address {
+    width: 45%;
+}
+
+.mat-row.highlighted {
+    background: #999;
+}
+
+#edit-button-col {
+    padding: 0px;
+}
+
+.cursor-move {
+    cursor: move;
+}
+
+.disable {
+    color: grey;
+    cursor: not-allowed;
+}
+
+.link {
+    color: #0645AD;
+    cursor: pointer;
+}
+.mat-dialog-container{
+  max-width: 100%;
+  max-height: 100% !important;
+  resize: both;
+}
+
+/*
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; } */

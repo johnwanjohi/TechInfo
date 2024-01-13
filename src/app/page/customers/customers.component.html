@@ -1,0 +1,99 @@
+<div class="row">
+  <div class="card">
+    <div class="card-content">
+      <div class="card-body">
+        <div class="table-responsive">
+          <mtx-grid
+            #customersTable
+            [data]="dataSource?.data"
+            [columns]="displayedColumns"
+            [showToolbar]="true"
+            [toolbarTemplate]="toolbarButtons"
+            [columnHideable]="columnHideable"
+            [columnHideableChecked]="columnHideableChecked"
+            [columnMovable]="columnMovable"
+            (columnChange)="log($event)"
+            [showColumnMenuButton]="false"
+            [showColumnMenuHeader]="true"
+            [columnMenuHeaderText]="'Show/Hide Columns'"
+            [ngClass]="'table table-hover'"
+            [pageSize]="5"
+            [pageSizeOptions]="[5]"
+            [loading]="isLoading"
+            [cellTemplate]="{ Action: actionTpl }"
+            (rowClick)="setCustomer($event?.rowData?.id)"
+            [rowClassFormatter]="rowClassFormatter"
+          >
+          </mtx-grid>
+
+          <!-- Toolbar Template -->
+          <ng-template #toolbarButtons>
+            <label class="font-medium-3 d-inline-block toolbaritem">
+              Total Customers : <span>{{ total_customers }} </span>
+            </label>
+            <div class="d-inline-block toolbaritem">
+              <!-- ADD BUTTON -->
+              <button
+                type="button"
+                class="btn btn-sm btn-outline-primary mr-1 mb-1"
+                *ngIf="user?.role == 'Admin' || user?.role == 'Manager'"
+                (click)="openDialog('add',{customer_id})"
+              >
+                Add Customer
+              </button>
+              <!-- RESET BUTTON -->
+              <button
+                type="button"
+                class="btn btn-sm btn-outline-primary mr-1 mb-1"
+                (click)="reset()"
+              >
+                Reset
+              </button>
+            </div>
+            <!-- SEARCH FIELD -->
+            <fieldset class="d-inline-block toolbaritem">
+              <input
+                #input
+                type="text"
+                placeholder="Filter ..."
+                id="ngx-MultiPurposeFilter-ref"
+                class="form-control form-action-right"
+                (keyup)="applyFilter($event)"
+                [(ngModel)]="filter"
+              />
+            </fieldset>
+          </ng-template>
+
+          <!-- Action Column Template -->
+          <ng-template
+            #actionTpl
+            let-customer
+            let-index="index"
+            let-col="colDef"
+          >
+            <div class="btn-group">
+              <!-- EDIT BUTTON -->
+              <button
+                type="button"
+                class="btn btn-sm btn-outline-info mr-1"
+                (click)="openDialog('edit', { id: customer.id })"
+                *ngIf="user.role === 'Admin' || user?.role === 'Manager'"
+              >
+                Edit
+              </button>
+              <!-- DELETE BUTTON -->
+              <button
+                type="button"
+                class="btn btn-sm btn-outline-danger mr-1"
+                (click)="openDialog('delete', { id: customer.id })"
+                *ngIf="user.role === 'Admin'"
+              >
+                Delete
+              </button>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

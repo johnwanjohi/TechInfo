@@ -1,0 +1,153 @@
+<div class="col-12">
+  <div class="card-dialog">
+    <div
+      class="card-header cursor-move"
+      cdkDrag
+      cdkDragRootElement=".cdk-overlay-pane"
+      cdkDragHandle
+    >
+      <h4 mat-dialog-title class="card-title">
+        {{ action.charAt(0).toUpperCase() + action.slice(1) }} Remote Access for
+        <small> {{ current_system_type }} System:</small>
+      </h4>
+    </div>
+    <mat-dialog-content>
+      <div class="card-content">
+        <div class="card-body">
+          <form [formGroup]="myForm">
+            <!-- <div class="form-row"> -->
+            <div class="row"></div>
+            <div class="row">
+              <!-- NAME -->
+              <div class="col-12">
+                <div class="form-group mb-2">
+                  <label for="remote_name">Name</label>
+                  <input
+                    type="text"
+                    placeholder=""
+                    class="form-control"
+                    formControlName="remote_name"
+                  />
+                  <small
+                    class="form-text text-muted danger"
+                    *ngIf="myForm.controls['remote_name'].hasError('required')"
+                  >
+                    required
+                  </small>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <!-- Remote TYPE -->
+              <div class="col-sm-12 col-md-6">
+                <div
+                  class="form-group"
+                  *ngIf="listOfRemoteTypes as remotetypes"
+                >
+                  <label for="remote_type">Remote Type</label>
+                  <ng-select
+                    #remote_type
+                    bindValue="remotetype"
+                    [items]="remotetypes"
+                    bindLabel="remotetype"
+                    formControlName="remote_type"
+                    placeholder="Select Remote Type"
+                  >
+                  </ng-select>
+                  <small
+                    class="form-text text-muted danger"
+                    *ngIf="myForm.controls['remote_type'].hasError('required')"
+                  >
+                    required
+                  </small>
+                </div>
+              </div>
+              <!-- REMOTE ID -->
+              <div class="col-sm-12 col-md-6">
+                <div class="form-group mb-2">
+                  <label for="remote_id">Remote ID</label>
+                  <input
+                    type="text"
+                    placeholder=""
+                    class="form-control"
+                    formControlName="remote_id"
+                    [value]="myForm.get('remote_id').value | uppercase"
+                  />
+                  <small
+                    class="form-text text-muted danger"
+                    *ngIf="myForm.controls['remote_id'].hasError('required')"
+                  >
+                    required
+                  </small>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <!-- LOGIN -->
+              <div class="col-sm-12 col-md-6">
+                <div class="form-group mb-2">
+                  <label for="remote_login">Login</label>
+                  <input
+                    type="text"
+                    placeholder="Login"
+                    class="form-control"
+                    formControlName="remote_login"
+                  />
+                </div>
+              </div>
+              <!-- PASSWORD -->
+              <div class="col-sm-12 col-md-6">
+                <div class="form-group mb-2">
+                  <label for="remote_password">Password</label>
+                  <input
+                    type="text"
+                    placeholder="Password"
+                    class="form-control"
+                    formControlName="remote_password"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <!-- NOTES -->
+              <div class="col-12">
+                <div class="form-group mb-2">
+                  <label for="notes">Notes</label>
+                  <textarea
+                    type="text"
+                    placeholder=""
+                    class="form-control form-control-lg"
+                    formControlName="notes"
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+            <!-- </div> -->
+          </form>
+        </div>
+      </div>
+    </mat-dialog-content>
+    <!-- Action Buttons -->
+    <mat-dialog-actions class="d-flex justify-content-center">
+      <div class="form-row">
+        <!-- SAVE BUTTON -->
+        <div class="col-6 d-flex justify-content-end">
+          <button
+            type="button"
+            class="btn btn-primary"
+            [disabled]="myForm.invalid"
+            (click)="Submit()"
+          >
+            <i class="ft-check-square mr-1"></i>Save
+          </button>
+        </div>
+        <!-- CANCEL BUTTON -->
+        <div class="col-6 d-flex justify-content-start">
+          <button type="button" class="btn btn-secondary" (click)="Cancel()">
+            <i class="ft-x mr-1"></i>Cancel
+          </button>
+        </div>
+      </div>
+    </mat-dialog-actions>
+  </div>
+</div>

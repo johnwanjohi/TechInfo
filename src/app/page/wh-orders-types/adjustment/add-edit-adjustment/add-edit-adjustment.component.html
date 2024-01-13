@@ -1,0 +1,117 @@
+<div class="col-lg-12 col-12">
+  <div class="card-dialog">
+    <div
+      class="card-header cursor-move"
+      cdkDrag
+      cdkDragRootElement=".cdk-overlay-pane"
+      cdkDragHandle
+    >
+      <h4 class="card-title">
+        {{ action.charAt(0).toUpperCase() + action.slice(1) }} Line Item:
+      </h4>
+    </div>
+    <div class="card-content">
+      <div class="card-body">
+        <form [formGroup]="myForm">
+          <div class="form-row">
+            <div class="col-md-12 col-12">
+              <div
+                class="form-group mb-2"
+                [formGroup]="myForm"
+                *ngIf="listOfProducts as listofproducts"
+              >
+                <label for="product_id">Products</label>
+                <ng-select
+                  #product_dropdownlist
+                  bindValue="id"
+                  bindLabel="partnumber"
+                  [items]="listofproducts"
+                  placeholder="select product"
+                  formControlName="product_id"
+                  (change)="getCurrentQty($event)"
+                ></ng-select>
+
+                <small
+                  class="form-text text-muted danger"
+                  *ngIf="myForm.controls['product_id'].hasError('required')"
+                >
+                  Product is <strong>required</strong>
+                </small>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="col-md-6 col-6">
+              <div class="form-group mb-2">
+                <label for="old_qty">Old Qty</label>
+                <span id="old_qty" type="number" class="form-control">
+                  {{ current_qty }}
+                </span>
+                <small
+                  class="form-text text-muted danger"
+                  *ngIf="myForm.controls['old_qty'].hasError('required')"
+                >
+                  Current Qty is <strong>required</strong>
+                </small>
+              </div>
+            </div>
+            <div class="col-md-6 col-6">
+              <div class="form-group mb-2">
+                <label for="new_qty">New Qty</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  formControlName="new_qty"
+                  placeholder="Ex. Adjusted Qty"
+                />
+                <small
+                  class="form-text text-muted danger"
+                  *ngIf="myForm.controls['new_qty'].hasError('required')"
+                >
+                  Adjusted Qty is <strong>required</strong>
+                </small>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="col-md-12 col-12">
+              <div class="form-group mb-2">
+                <label for="notes">Notes</label>
+                <textarea
+                  type="text"
+                  placeholder=""
+                  class="form-control"
+                  formControlName="notes"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="col-6 d-flex justify-content-end">
+              <button
+                type="button"
+                class="btn btn-primary"
+                [disabled]="myForm.invalid"
+                (click)="Submit()"
+              >
+                <i class="ft-check-square mr-1"></i>Save
+              </button>
+            </div>
+            <div class="col-6 d-flex justify-content-start">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                (click)="Cancel()"
+              >
+                <i class="ft-x mr-1"></i>Cancel
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

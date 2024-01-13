@@ -1,0 +1,87 @@
+<div>
+  <ul ngbNav #nav="ngbNav" class="nav nav-pills nav-fill">
+    <li [ngbNavItem]="1" class="nav-item">
+      <a ngbNavLink class="nav-link">Stock Summary</a>
+      <ng-template ngbNavContent>
+        <app-wh-stock> </app-wh-stock>
+      </ng-template>
+    </li>
+    <li [ngbNavItem]="2" class="nav-item">
+      <a ngbNavLink class="nav-link"
+        >{{ selectedOrderTypeName }} Order Summary</a
+      >
+      <ng-template ngbNavContent>
+        <div *ngIf="current_order_id !== 0 else other_content" fxLayout="row nowrap" class="form-group">
+          <div>
+
+            <app-supplierstock
+              #wh_SupplierStock
+              *ngIf="selectedOrderTypeName === 'Supplier Stock'"
+            >
+            </app-supplierstock>
+            <app-supplierreturn
+              #wh_SupplierReturn
+              *ngIf="selectedOrderTypeName === 'Supplier Return'"
+            >
+            </app-supplierreturn>
+
+            <app-vanstock
+              #wh_VanStock
+              *ngIf="selectedOrderTypeName === 'Van Stock'"
+            >
+            </app-vanstock>
+            <app-vanreturn
+              #wh_VanReturn
+              *ngIf="selectedOrderTypeName === 'Van Return'"
+            >
+            </app-vanreturn>
+            <app-adjustment
+              #whAdjustment
+              *ngIf="selectedOrderTypeName === 'Adjustment'"
+            >
+            </app-adjustment>
+            <app-transfer
+              #wh_Transfer
+              *ngIf="selectedOrderTypeName === 'Transfer' && !warehouseHasIncomingProducts"
+              [warehouseHasIncomingProducts]="warehouseHasIncomingProducts"
+              [isReceive]="false"
+              [isTransfer]="true"
+            >
+            </app-transfer>
+            <app-transfer
+              #wh_Transfer
+              *ngIf="selectedOrderTypeName === 'Transfer In'"
+              [new_wh_id] = "new_wh_id"
+              [warehouseHasIncomingProducts]="warehouseHasIncomingProducts"
+              [isReceive]="true"
+              [isTransfer]="false"
+            >
+            </app-transfer>
+          </div>
+        </div>
+      </ng-template>
+      <ng-template #other_content>
+
+        <p class="font-medium-2">No selected order.</p>
+      </ng-template>
+    </li>
+    <!--<li [ngbNavItem]="3" *ngIf="warehouseHasIncomingProducts" class="nav-item">
+      <a ngbNavLink class="nav-link">Receive Transfer</a>
+      <ng-template ngbNavContent >
+        <div fxLayout="row nowrap" class="form-group">
+          <div>
+            <app-transfer
+              #wh_Transfer
+              [new_wh_id] = "new_wh_id"
+              [warehouseHasIncomingProducts]="warehouseHasIncomingProducts"
+              [isReceive]="true"
+              [isTransfer]="false"
+            >
+            </app-transfer>
+          </div>
+        </div>
+      </ng-template>
+    </li>-->
+  </ul>
+  <div [ngbNavOutlet]="nav" class="mt-2"></div>
+</div>

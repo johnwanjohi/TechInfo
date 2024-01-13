@@ -1,0 +1,31 @@
+/* You can add global styles to this file, and also import other style files */
+
+// @use 'app/theme/style';
+// @use 'styles/themes';
+// @use 'styles/custom';
+// @use 'styles/grid';
+// // @use 'styles/helpers';
+// // @use 'styles/plugins';
+// @import '@ng-matero/extensions/theming';
+// @include material-extensions-theme($theme);
+
+.mtx-grid-toolbar-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    flex: 1;
+}
+
+.mtx-grid-toolbar {
+    gap: 1rem;
+    flex: 1;
+}
+
+.mat-column-Action{
+    max-width: 140px;
+}
+
+.mat-column-Action{
+    width: 5%;
+}

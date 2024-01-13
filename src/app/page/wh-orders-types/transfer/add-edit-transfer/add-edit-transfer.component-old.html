@@ -1,0 +1,159 @@
+<div class="col-lg-12 col-12">
+  <div class="card-dialog">
+    <div class="card-header cursor-move" cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle>
+      <h4 class="card-title">
+        {{ selectedOrderTypeName || "" }} Transfer Order Item Details:
+      </h4>
+    </div>
+    <div class="card-content">
+      <div class="card-body">
+        <form [formGroup]="myForm">
+          <div class="form-row" >
+            <div *ngIf="listOfWareHouses  as warehouses" class="col-6">
+              <div *ngIf="listOfWareHouses" class="form-group mb-2">
+                <label>New Warehouse {{this.action.toLowerCase() === 'edit'}}</label>
+                <ng-select #warehouses_id placeholder="select Warehouse"
+                           [readonly]="this.action.toLowerCase() === 'edit'"
+                           formControlName="new_wh_id"
+                           [items]="warehouses" bindLabel="name" bindValue="id"
+                           [(ngModel)]="selected_new_wh_id"></ng-select>
+                <small class="form-text text-muted danger" *ngIf="
+                    myForm.controls['new_wh_id']?.hasError('required')
+                  ">
+                  Warehouse is <strong>required</strong>
+                </small>
+              </div>
+            </div>
+            <div *ngIf="listOfProducts as listofproducts" class="col-6">
+              <div *ngIf="listOfProducts" class="form-group mb-2">
+                <label for="product_id">Products</label>
+                <ng-select #product_id placeholder="select product" name="product_id"
+                           [readonly]="this.action.toLowerCase() === 'edit'"
+                           formControlName="product_id"
+                           [items]="listofproducts" bindLabel="partnumber"
+                           bindValue="product_id"
+                           [(ngModel)]="selected_product_id"
+                           (change)="getAvailableQty($event)"></ng-select>
+                <small class="form-text text-muted danger" *ngIf="myForm.controls['product_id'].hasError('required')">
+                  Product is <strong>required</strong>
+                </small>
+              </div>
+            </div>
+
+          </div>
+
+
+          <div class="form-row">
+            <div class="col-6">
+              <div class="form-group mb-2">
+                <label for="transfer_qty">Qty Transfered
+                  <span class="info" *ngIf="available_qty">
+                    ( Available Qty {{ available_qty }})</span
+                  ></label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  formControlName="transfer_qty"
+                  placeholder="Ex. Qty Transfered"
+                />
+                <small
+                  class="form-text text-muted danger"
+                  *ngIf="myForm.controls['transfer_qty'].hasError('required')"
+                >
+                  Transfer QTY is <strong>required</strong>
+                </small>
+                <small
+                  class="form-text text-muted danger"
+                  *ngIf="myForm.controls['transfer_qty'].hasError('max')"
+                >
+                  Maximum Transfer QTY ({{ available_qty }}) is
+                  <strong>exceeded</strong>
+                </small>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-group mb-2">
+                <label for="receive_qty">Qty Received</label>
+                <input type="number" class="form-control" formControlName="receive_qty" placeholder="Ex. Qty Received" />
+                <small class="form-text text-muted danger" *ngIf="myForm.controls['receive_qty'].hasError('required')">
+                  Received QTY is <strong>required</strong>
+                </small>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="col-6">
+              <div class="form-group mb-2">
+                <label for="transfer_date">Transfer Date</label>
+                <input type="date" class="form-control" formControlName="transfer_date" placeholder="Ex. Date Transfered" />
+                <small class="form-text text-muted danger" *ngIf="myForm.controls['transfer_date'].hasError('required')">
+                  Date Transfered is <strong>required</strong>
+                </small>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-group mb-2">
+                <label for="receive_date">Received Date</label>
+                <input type="date" class="form-control" formControlName="receive_date" placeholder="Ex. Received Date" />
+                <small class="form-text text-muted danger" *ngIf="myForm.controls['receive_date'].hasError('required')">
+                  Received Date <strong>required</strong>
+                </small>
+              </div>
+            </div>
+
+          </div>
+          <div class="form-row">
+            <div class="col-md-12 col-12">
+              <div class="form-group mb-2">
+                <label for="transfer_by">Transfered By</label>
+                <input type="text" class="form-control" formControlName="transfer_by" placeholder="Ex. Transfered By" />
+                <small class="form-text text-muted danger" *ngIf="myForm.controls['transfer_by'].hasError('required')">
+                  Transfered By <strong>required</strong>
+                </small>
+              </div>
+            </div>
+          </div>
+
+
+
+
+          <div class="form-row">
+            <div class="col-md-12 col-12">
+              <div class="form-group mb-2">
+                <label for="receive_by">Received By</label>
+                <input type="text" class="form-control" formControlName="receive_by" placeholder="Ex. Received By" />
+                <small class="form-text text-muted danger" *ngIf="myForm.controls['receive_by'].hasError('required')">
+                  Received By <strong>required</strong>
+                </small>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="col-md-12 col-12">
+              <div class="form-group mb-2">
+                <label for="notes">Notes</label>
+                <textarea type="text" class="form-control" formControlName="notes" placeholder=""></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div fxLayout="row nowrap" class="form-group">
+            <div>
+              <button type="button" class="btn btn-primary mr-2" [disabled]="myForm.invalid" (click)="submit()" >
+                <i class="ft-check-square mr-1"></i>Save
+              </button>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <button type="button" class="btn btn-secondary" (click)="Cancel()">
+                <i class="ft-x mr-1"></i>Cancel</button
+              ><br />
+              <!-- {{ invalidControls | json }} -->
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

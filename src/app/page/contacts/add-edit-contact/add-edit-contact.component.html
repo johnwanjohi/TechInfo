@@ -1,0 +1,163 @@
+<div class="col-12">
+  <div class="card-dialog">
+    <div
+      class="card-header cursor-move"
+      cdkDrag
+      cdkDragRootElement=".cdk-overlay-pane"
+      cdkDragHandle
+    >
+      <h4 class="card-title">
+        {{ action.charAt(0).toUpperCase() + action.slice(1) }} Contact:
+      </h4>
+    </div>
+    <div class="card-content">
+      <div class="card-body">
+        <form [formGroup]="myForm">
+          <div class="form-row">
+            <div
+              *ngIf="sites as listOfSites"
+              class="col-12 col-lg-12 col-md-12"
+            >
+              <div class="form-group mb-2">
+                <label for="site_id">Site</label>
+                <ng-select
+                  #sites
+                  [items]="listOfSites"
+                  bindLabel="name"
+                  bindValue="id"
+                  formControlName="site_id"
+                  placeholder="Select site"
+                >
+                </ng-select>
+                <small
+                  class="form-text text-muted danger"
+                  *ngIf="myForm.controls['site_id'].hasError('required')"
+                >
+                  required
+                </small>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="col-md-6 col-12">
+              <div class="form-group mb-2">
+                <label for="firstname">First Name</label>
+                <input
+                  type="text"
+                  placeholder=""
+                  class="form-control"
+                  formControlName="firstname"
+                  [value]="myForm.get('firstname').value | titlecase"
+                />
+                <small
+                  class="form-text text-muted danger"
+                  *ngIf="myForm.controls['firstname'].hasError('required')"
+                >
+                  required
+                </small>
+              </div>
+            </div>
+            <div class="col-md-6 col-12">
+              <div class="form-group mb-2">
+                <label for="lastname">Last Name</label>
+                <input
+                  type="text"
+                  placeholder=""
+                  class="form-control"
+                  formControlName="lastname"
+                  [value]="myForm.get('lastname').value | titlecase"
+                />
+                <small
+                  class="form-text text-muted danger"
+                  *ngIf="myForm.controls['lastname'].hasError('required')"
+                >
+                  required
+                </small>
+              </div>
+            </div>
+            <div class="col-md-6 col-12">
+              <div class="form-group mb-2">
+                <label for="title">Title</label>
+                <input
+                  type="text"
+                  placeholder=""
+                  class="form-control"
+                  formControlName="title"
+                  [value]="myForm.get('title').value | titlecase"
+                />
+                <small
+                  class="form-text text-muted danger"
+                  *ngIf="myForm.controls['title'].hasError('required')"
+                >
+                  required
+                </small>
+              </div>
+            </div>
+            <div class="col-md-6 col-12">
+              <div class="form-group mb-2">
+                <label for="workphone">Work Phone</label>
+                <input
+                  type="tel"
+                  placeholder=""
+                  class="form-control"
+                  formControlName="workphone"
+                  mask="(000) 000-0000"
+                />
+              </div>
+            </div>
+            <div class="col-md-6 col-12">
+              <div class="form-group mb-2">
+                <label for="cellphone">Cell Phone</label>
+                <input
+                  type="tel"
+                  placeholder=""
+                  class="form-control"
+                  formControlName="cellphone"
+                  mask="(000) 000-0000"
+                />
+              </div>
+            </div>
+            <div class="col-md-6 col-12">
+              <div class="form-group mb-2">
+                <label for="email">Email</label>
+                <input
+                  type="email"
+                  placeholder=""
+                  class="form-control"
+                  formControlName="email"
+                />
+                <small
+                  class="form-text text-muted danger"
+                  *ngIf="myForm.controls['email'].hasError('required')"
+                >
+                  required
+                </small>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="col-6 d-flex justify-content-end">
+              <button
+                type="button"
+                class="btn btn-primary"
+                [disabled]="myForm.invalid"
+                (click)="Submit()"
+              >
+                <i class="ft-check-square mr-1"></i>Save
+              </button>
+            </div>
+            <div class="col-6 d-flex justify-content-start">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                (click)="Cancel()"
+              >
+                <i class="ft-x mr-1"></i>Cancel
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

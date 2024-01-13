@@ -1,0 +1,108 @@
+<div class="col-12">
+  <div class="card-dialog">
+    <div
+      class="card-header cursor-move"
+      cdkDrag
+      cdkDragRootElement=".cdk-overlay-pane"
+      cdkDragHandle
+    >
+      <h4 mat-dialog-title class="card-title">
+        {{ action.charAt(0).toUpperCase() + action.slice(1) }} Order:
+      </h4>
+    </div>
+    <mat-dialog-content>
+      <div class="card-content">
+        <div class="card-body">
+          <form [formGroup]="myForm">
+            <div class="form-row">
+              <div class="col-md-6 col-12">
+                <div
+                  class="form-group mb-2"
+                  *ngIf="listOfWarehouses as warehouses"
+                >
+                  <label>Warehouse</label>
+                  <ng-select
+                    #warehouses
+                    placeholder="select warehouse"
+                    formControlName="warehouse_id"
+                    [items]="warehouses"
+                    bindLabel="name"
+                    bindValue="id"
+                    [(ngModel)]="selected_warehouse"
+                  ></ng-select>
+                  <small
+                    class="form-text text-muted danger"
+                    *ngIf="myForm.controls['warehouse_id'].hasError('required')"
+                  >
+                    Warehouse is <strong>required</strong>
+                  </small>
+                </div>
+              </div>
+              <div class="col-md-6 col-12">
+                <div
+                  class="form-group mb-2"
+                  *ngIf="listOfOrderTypes as orderTypes"
+                >
+                  <label for="street">Order Type</label>
+                  <ng-select
+                    #orderTypes
+                    placeholder="Select Order Type"
+                    name="order_type_id"
+                    formControlName="order_type_id"
+                    [items]="orderTypes"
+                    bindLabel="order_type"
+                    bindValue="id"
+                    [(ngModel)]="selected_ordertype"
+                    [readonly]="this.id !== undefined && this.id !== 0"
+                  ></ng-select>
+                  <small
+                    class="form-text text-muted danger"
+                    *ngIf="
+                      myForm.controls['order_type_id'].hasError('required')
+                    "
+                  >
+                    Order Type is <strong>required</strong>
+                  </small>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <div class="form-group mb-2">
+                <label for="notes">Notes</label>
+                <textarea
+                  type="text"
+                  class="form-control"
+                  formControlName="notes"
+                  placeholder=""
+                ></textarea>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </mat-dialog-content>
+    <!-- Action Buttons -->
+    <mat-dialog-actions class="d-flex justify-content-center">
+      <div class="form-row">
+        <!-- SAVE BUTTON -->
+        <div class="col-6 d-flex justify-content-end">
+          <button
+            type="button"
+            class="btn btn-primary"
+            [disabled]="myForm.invalid"
+            (click)="Submit()"
+          >
+            <i class="ft-check-square mr-1"></i>Save
+          </button>
+        </div>
+        <!-- CANCEL BUTTON -->
+        <div class="col-6 d-flex justify-content-start">
+          <button type="button" class="btn btn-secondary" (click)="Cancel()">
+            <i class="ft-x mr-1"></i>Cancel
+          </button>
+        </div>
+      </div>
+    </mat-dialog-actions>
+  </div>
+</div>

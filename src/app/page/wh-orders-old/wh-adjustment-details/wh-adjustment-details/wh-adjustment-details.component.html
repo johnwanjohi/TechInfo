@@ -1,0 +1,187 @@
+<div class="info-pane">
+  <div class="summary">
+    <div class="info" id="wh_orders-info">
+      <div class="name" id="wh_orders-name">
+        <p>Adjustments Items</p>
+      </div>
+      <div class="modify-items"></div>
+      <div class="search-items">
+        <mat-form-field appearance="standard">
+          <mat-label>Filter</mat-label>
+          <input
+            matInput
+            (keyup)="applyFilter($event)"
+            [(ngModel)]="filter"
+            placeholder="Ex. Mia"
+            #input
+          />
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="table-box" id="wh_orders-table-box">
+      <div class="table-responsive">
+        <table mat-table [dataSource]="dataSource" matSort>
+          <!-- ID Column -->
+          <ng-container matColumnDef="edit">
+            <th mat-header-cell *matHeaderCellDef class="p-1"></th>
+            <td
+              mat-cell
+              *matCellDef="let wh_adjustment_details"
+              class="p-1 align-middle"
+            >
+              <button
+                [disabled]="user?.role !== 'Admin' && user?.role != 'Manager'"
+                *ngIf="user?.role === 'Admin' || user?.role === 'Manager'"
+                type="button"
+                class="btn btn-sm btn-outline-info"
+                (click)="openDialog('edit', wh_adjustment_details)"
+              >
+                Edit
+              </button>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="delete">
+            <th mat-header-cell *matHeaderCellDef class="p-1"></th>
+            <td
+              mat-cell
+              *matCellDef="let wh_adjustment_details"
+              class="p-1 align-middle"
+            >
+              <button
+                [disabled]="user.role !== 'Admin'"
+                *ngIf="user.role === 'Admin'"
+                type="button"
+                class="btn btn-sm btn-outline-danger"
+                (click)="openDialog('delete', wh_adjustment_details)"
+              >
+                Delete
+              </button>
+            </td>
+          </ng-container>
+
+          <!-- ID Column -->
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="p-1">
+              ID
+            </th>
+            <td
+              mat-cell
+              *matCellDef="let wh_adjustment_details"
+              class="p-1 align-middle"
+            >
+              {{ wh_adjustment_details.id }}
+            </td>
+          </ng-container>
+
+          <!-- Progress Column -->
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="p-1">
+              Status
+            </th>
+            <td
+              mat-cell
+              *matCellDef="let wh_adjustment_details"
+              class="p-1 align-middle"
+            >
+              {{ wh_adjustment_details.status }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="productname">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="p-1">
+              Product Name
+            </th>
+            <td
+              mat-cell
+              *matCellDef="let wh_adjustment_details"
+              class="p-1 align-middle"
+            >
+              {{ wh_adjustment_details.productname }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="old_qty">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="p-1">
+              Old Quantity
+            </th>
+            <td
+              mat-cell
+              *matCellDef="let wh_adjustment_details"
+              class="p-1 align-middle"
+            >
+              {{ wh_adjustment_details.old_qty }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="new_qty">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="p-1">
+              New Quantity
+            </th>
+            <td
+              mat-cell
+              *matCellDef="let wh_adjustment_details"
+              class="p-1 align-middle"
+            >
+              {{ wh_adjustment_details.new_qty }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="warehouse">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="p-1">
+              Warehouse
+            </th>
+            <td
+              mat-cell
+              *matCellDef="let wh_adjustment_details"
+              class="p-1 align-middle"
+            >
+              {{ wh_adjustment_details.warehouse }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="create_by">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="p-1">
+              Created By
+            </th>
+            <td
+              mat-cell
+              *matCellDef="let wh_adjustment_details"
+              class="p-1 align-middle"
+            >
+              {{ wh_adjustment_details.create_by }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="create_date">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header class="p-1">
+              Transfer Date
+            </th>
+            <td
+              mat-cell
+              *matCellDef="let wh_adjustment_details"
+              class="p-1 align-middle"
+            >
+              {{ wh_adjustment_details.create_date }}
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr
+            mat-row
+            *matRowDef="let row; columns: displayedColumns"
+            (click)="setCurrentItemID(row.id)"
+            [class.table-active]="current_item_id == row.id"
+          ></tr>
+          <!-- Row shown when there is no matching data. -->
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="4">
+              No data matching the filter "{{ input.value }}"
+            </td>
+          </tr>
+        </table>
+        <mat-paginator
+          [pageSize]="5"
+          aria-label="Select page of records"
+        ></mat-paginator>
+      </div>
+      <!-- Sites Table End -->
+    </div>
+  </div>
+</div>

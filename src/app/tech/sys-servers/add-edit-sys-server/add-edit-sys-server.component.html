@@ -1,0 +1,597 @@
+<div class="col-12">
+  <div class="card-dialog">
+    <div
+      class="card-header cursor-move"
+      cdkDrag
+      cdkDragRootElement=".cdk-overlay-pane"
+      cdkDragHandle
+    >
+      <h4 mat-dialog-title class="card-title">
+        {{ action.charAt(0).toUpperCase() + action.slice(1) }} Server for
+        <small> {{ current_system_type }} System:</small>
+      </h4>
+    </div>
+    <mat-dialog-content>
+      <div class="card-content">
+        <div class="card-body">
+          <form [formGroup]="myForm">
+            <div class="form-row">
+              <!-- Top Section -->
+              <div class="form-row col-12">
+                <!-- Left Section -->
+                <div class="col-md-6 col-sm-12">
+                  <!-- NAME -->
+                  <div class="col-sm-12 col-12">
+                    <div class="form-group mb-2">
+                      <label for="name">Name</label>
+                      <input
+                        type="text"
+                        name="name"
+                        placeholder=""
+                        class="form-control"
+                        formControlName="name"
+                      />
+                      <small
+                        class="form-text text-muted danger"
+                        *ngIf="myForm.controls['name'].hasError('required')"
+                      >
+                        required
+                      </small>
+                    </div>
+                  </div>
+                  <!-- BRAND -->
+                  <div class="col-sm-12 col-12">
+                    <div class="form-group" *ngIf="listOfBrands as brands">
+                      <label for="brand_id">Brand</label>
+                      <ng-select
+                        #brand_id
+                        [items]="brands"
+                        bindLabel="brand"
+                        bindValue="id"
+                        formControlName="brand_id"
+                        placeholder="Select brand"
+                      >
+                      </ng-select>
+                      <small
+                        class="form-text text-muted danger"
+                        *ngIf="myForm.controls['brand_id'].hasError('required')"
+                      >
+                        required
+                      </small>
+                    </div>
+                  </div>
+                  <!-- SERVER TYPE -->
+                  <div class="col-sm-12 col-12">
+                    <div
+                      class="form-group"
+                      *ngIf="listOfServerTypes as servertypes"
+                    >
+                      <label for="server_type">Server Type</label>
+                      <ng-select
+                        #server_type
+                        bindValue="servertype"
+                        [items]="servertypes"
+                        bindLabel="servertype"
+                        formControlName="server_type"
+                        placeholder="Select Server Type"
+                      >
+                      </ng-select>
+                      <small
+                        class="form-text text-muted danger"
+                        *ngIf="
+                          myForm.controls['server_type'].hasError('required')
+                        "
+                      >
+                        required
+                      </small>
+                    </div>
+                  </div>
+                  <!-- REMOTE IP -->
+                  <div class="col-sm-12 col-12">
+                    <div class="form-group mb-2">
+                      <label for="remote_ip">Remote IP</label>
+                      <input
+                        type="text"
+                        name="remote_ip"
+                        placeholder=""
+                        class="form-control"
+                        formControlName="remote_ip"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <!-- Right Section -->
+                <div class="col-md-6 col-sm-12">
+                  <!-- PART NUMBER / MODEL -->
+                  <div class="col-sm-12 col-12">
+                    <div
+                      class="form-group mb-2"
+                      *ngIf="listOfProducts as listofproducts"
+                    >
+                      <label for="product_id">Part Number</label>
+                      <ng-select
+                        #product_id
+                        bindValue="id"
+                        name="product_id"
+                        bindLabel="partnumber"
+                        [items]="listofproducts"
+                        placeholder="select product"
+                        formControlName="product_id"
+                      ></ng-select>
+                      <small
+                        class="form-text text-muted danger"
+                        *ngIf="
+                          myForm.controls['product_id'].hasError('required')
+                        "
+                      >
+                        required
+                      </small>
+                    </div>
+                  </div>
+                  <!-- SERIAL NUMBER -->
+                  <div class="col-sm-12 col-12">
+                    <div class="form-group mb-2">
+                      <label for="serial_number">Serial Number</label>
+                      <input
+                        type="text"
+                        name="serial_number"
+                        placeholder=""
+                        class="form-control"
+                        formControlName="serial_number"
+                        [value]="myForm.get('serial_number').value | uppercase"
+                      />
+                    </div>
+                  </div>
+                  <!-- SERVICE TAG -->
+                  <div class="col-sm-12 col-12">
+                    <div class="form-group mb-2">
+                      <label for="service_tag">Service Tag</label>
+                      <input
+                        type="text"
+                        name="service_tag"
+                        placeholder=""
+                        class="form-control"
+                        formControlName="service_tag"
+                        [value]="myForm.get('service_tag').value | uppercase"
+                      />
+                    </div>
+                  </div>
+                  <!-- LOCATION -->
+                  <div class="col-sm-12 col-12">
+                    <div class="form-group mb-2">
+                      <label for="location">Location</label>
+                      <input
+                        type="text"
+                        name="location"
+                        placeholder=""
+                        class="form-control"
+                        formControlName="location"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- NICs Section -->
+              <div class="form-row col-sm-12">
+                <!-- NIC-1 - CORPORATE -->
+                <div class="col-sm-12 col-md-4 border rounded">
+                  <div class="col-12">
+                    <h3 class="font-font-large-1 text-center text-info">
+                      NIC-1 Corporate
+                    </h3>
+                  </div>
+                  <!-- NIC 1 MAC -->
+                  <div class="col-12">
+                    <div class="form-group mb-2">
+                      <label for="nic1_mac">MAC Address</label>
+                      <!--<input
+                        type="text"
+                        id="nic1_mac"
+                        placeholder=""
+                        class="form-control form-control-sm"
+                        formControlName="nic1_mac"
+                        [value]="myForm.get('nic1_mac').value | uppercase"
+                        pattern="_macRegex"
+                        oninput="this.macAddressConstructor(this.value)"
+                        />-->
+                      <input
+                        type="text"
+                        id="nic1_mac"
+                        placeholder=""
+                        class="form-control form-control-sm"
+                        formControlName="nic1_mac"
+                        [value]="myForm.get('nic1_mac').value | uppercase"
+                        />
+                      <small
+                        class="form-text text-muted danger"
+                        *ngIf="myForm.controls['nic1_mac'].hasError('mac') || myForm.controls['nic1_mac'].hasError('mask')"
+                      >
+                        Not valid NIC MAC address
+                      </small>
+                    </div>
+                  </div>
+                  <!-- NIC 1 IP -->
+                  <div class="col-12">
+                    <div class="form-group mb-2">
+                      <label for="nic1_ip">IP Address</label>
+                      <input
+                        type="text"
+                        placeholder=""
+                        class="form-control form-control-sm"
+                        formControlName="nic1_ip"
+                      />
+                      <small
+                        class="form-text text-muted danger"
+                        *ngIf="myForm.controls['nic1_ip'].hasError('ip')"
+                      >
+                        Not valid IP address
+                      </small>
+                    </div>
+                  </div>
+                  <!-- NIC 1 SUBNET -->
+                  <div class="col-12">
+                    <div
+                      class="form-group"
+                      *ngIf="listOfSubnetMask as subnetmask"
+                    >
+                      <label for="nic1_subnet">Subnet Mask</label>
+                      <ng-select
+                        #nic1_subnet
+                        bindValue="subnetmask"
+                        name="nic1_subnet"
+                        [items]="subnetmask"
+                        bindLabel="subnetmask"
+                        formControlName="nic1_subnet"
+                        placeholder=""
+                      >
+                      </ng-select>
+                    </div>
+                  </div>
+                  <!-- NIC 1 GATEWAY -->
+                  <div class="col-12">
+                    <div class="form-group mb-2">
+                      <label for="nic1_gateway">Gateway</label>
+                      <input
+                        type="text"
+                        placeholder=""
+                        class="form-control form-control-sm"
+                        formControlName="nic1_gateway"
+                      />
+                    </div>
+                  </div>
+                  <!-- NIC 1 PORT -->
+                  <div class="col-12">
+                    <div class="form-group mb-2">
+                      <label for="nic1_port">Switch Port</label>
+                      <input
+                        type="text"
+                        placeholder=""
+                        class="form-control form-control-sm"
+                        formControlName="nic1_port"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <!-- NIC-2 - CAMERA -->
+                <div class="col-sm-12 col-md-4 border rounded">
+                  <div class="col-12">
+                    <h3 class="font-font-large-1 text-center text-info">
+                      NIC-2 Camera
+                    </h3>
+                  </div>
+                  <!-- NIC 2 MAC -->
+                  <div class="col-12">
+                    <div class="form-group mb-2">
+                      <label for="nic2_mac">MAC Address</label>
+                      <input
+                        id="nic2_mac"
+                        type="text"
+                        placeholder=""
+                        class="form-control form-control-sm"
+                        formControlName="nic2_mac"
+                        pattern="_macRegex"
+                        [value]="myForm.get('nic2_mac').value | uppercase"
+                      />
+                      <small
+                        class="form-text text-muted danger"
+                        *ngIf="myForm.controls['nic2_mac'].hasError('mac') || myForm.controls['nic2_mac'].hasError('mask')"
+                      >
+                        Not valid MAC address
+                      </small>
+                    </div>
+                  </div>
+                  <!-- NIC 2 IP -->
+                  <div class="col-12">
+                    <div class="form-group mb-2">
+                      <label for="nic2_ip">IP Address</label>
+                      <input
+                        type="text"
+                        placeholder=""
+                        class="form-control form-control-sm"
+                        formControlName="nic2_ip"
+                      />
+                      <small
+                        class="form-text text-muted danger"
+                        *ngIf="myForm.controls['nic2_ip'].hasError('ip')"
+                      >
+                        Not valid IP address
+                      </small>
+                    </div>
+                  </div>
+                  <!-- NIC 2 SUBNET -->
+                  <div class="col-12">
+                    <div
+                      class="form-group"
+                      *ngIf="listOfSubnetMask as subnetmask"
+                    >
+                      <label for="nic2_subnet">Subnet Mask</label>
+                      <ng-select
+                        #nic2_subnet
+                        bindValue="subnetmask"
+                        name="nic2_subnet"
+                        [items]="subnetmask"
+                        bindLabel="subnetmask"
+                        formControlName="nic2_subnet"
+                        placeholder=""
+                      >
+                      </ng-select>
+                    </div>
+                  </div>
+                  <!-- NIC 2 GATEWAY -->
+                  <div class="col-12">
+                    <div class="form-group mb-2">
+                      <label for="nic2_gateway">Gateway</label>
+                      <input
+                        type="text"
+                        placeholder=""
+                        class="form-control form-control-sm"
+                        formControlName="nic2_gateway"
+                      />
+                    </div>
+                  </div>
+                  <!-- NIC 2 PORT -->
+                  <div class="col-12">
+                    <div class="form-group mb-2">
+                      <label for="nic2_port">Switch Port</label>
+                      <input
+                        type="text"
+                        placeholder=""
+                        class="form-control form-control-sm"
+                        formControlName="nic2_port"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <!-- NIC-0 - iDRAC -->
+                <div class="col-sm-12 col-md-4 border rounded">
+                  <div class="col-12">
+                    <h3 class="font-font-large-1 text-center text-info">
+                      NIC-0 iDRAC
+                    </h3>
+                  </div>
+                  <!-- NIC 0 MAC -->
+                  <div class="col-12">
+                    <div class="form-group mb-2">
+                      <label for="nic0_mac">MAC Address</label>
+                      <input
+                        type="text"
+                        placeholder=""
+                        class="form-control form-control-sm"
+                        formControlName="nic0_mac"
+                        [value]="myForm.get('nic0_mac').value | uppercase"
+                        pattern="_macRegex"
+                      />
+                      <small
+                        class="form-text text-muted danger"
+                        *ngIf="myForm.controls['nic0_mac'].hasError('mac') || myForm.controls['nic0_mac'].hasError('mask')"
+                      >
+                        Not valid MAC address
+                      </small>
+                    </div>
+                  </div>
+                  <!-- NIC 0 IP -->
+                  <div class="col-12">
+                    <div class="form-group mb-2">
+                      <label for="nic0_ip">IP Address</label>
+                      <input
+                        type="text"
+                        placeholder=""
+                        class="form-control form-control-sm"
+                        formControlName="nic0_ip"
+                      />
+                      <small
+                        class="form-text text-muted danger"
+                        *ngIf="myForm.controls['nic0_ip'].hasError('ip')"
+                      >
+                        Not valid IP address
+                      </small>
+                    </div>
+                  </div>
+                  <!-- NIC 0 SUBNET -->
+                  <div class="col-12">
+                    <div
+                      class="form-group"
+                      *ngIf="listOfSubnetMask as subnetmask"
+                    >
+                      <label for="nic0_subnet">Subnet Mask</label>
+                      <ng-select
+                        #nic0_subnet
+                        bindValue="subnetmask"
+                        name="nic0_subnet"
+                        [items]="subnetmask"
+                        bindLabel="subnetmask"
+                        formControlName="nic0_subnet"
+                        placeholder=""
+                      >
+                      </ng-select>
+                    </div>
+                  </div>
+                  <!-- NIC 0 GATEWAY -->
+                  <div class="col-12">
+                    <div class="form-group mb-2">
+                      <label for="nic0_gateway">Gateway</label>
+                      <input
+                        type="text"
+                        placeholder=""
+                        class="form-control form-control-sm"
+                        formControlName="nic0_gateway"
+                      />
+                    </div>
+                  </div>
+                  <!-- NIC 0 PORT -->
+                  <div class="col-12">
+                    <div class="form-group mb-2">
+                      <label for="nic0_port">Switch Port</label>
+                      <input
+                        type="text"
+                        placeholder=""
+                        class="form-control form-control-sm"
+                        formControlName="nic0_port"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- OS/Server Section -->
+              <div class="form-row col-12">
+                <!-- SYSTEM VERSION -->
+                <div class="col-sm-12 col-md-4 border rounded">
+                  <div class="col-12">
+                    <h3 class="font-font-large-1 text-center text-info">
+                      System Versions
+                    </h3>
+                  </div>
+                  <!-- OS VERSION -->
+                  <div class="col-12">
+                    <div class="form-group mb-2">
+                      <label for="os_version">OS Ver.</label>
+                      <input
+                        type="text"
+                        placeholder=""
+                        class="form-control form-control-sm"
+                        formControlName="os_version"
+                      />
+                    </div>
+                  </div>
+                  <!-- SERVER VERSION -->
+                  <div class="col-12">
+                    <div class="form-group mb-2">
+                      <label for="server_version">Server Ver.</label>
+                      <input
+                        type="text"
+                        placeholder=""
+                        class="form-control form-control-sm"
+                        formControlName="server_version"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <!-- OS (Windows) CREDENTIALS -->
+                <div class="col-sm-12 col-md-4 border rounded">
+                  <div class="col-12">
+                    <h3 class="font-font-large-1 text-center text-info">
+                      OS <small>(Windows)</small> Credentials
+                    </h3>
+                  </div>
+                  <!-- OS LOGIN -->
+                  <div class="col-12">
+                    <div class="form-group mb-2">
+                      <label for="os_login">Login</label>
+                      <input
+                        type="text"
+                        placeholder=""
+                        class="form-control form-control-sm"
+                        formControlName="os_login"
+                      />
+                    </div>
+                  </div>
+                  <!-- OS PASSWORD -->
+                  <div class="col-12">
+                    <div class="form-group mb-2">
+                      <label for="os_password">Password</label>
+                      <input
+                        type="text"
+                        placeholder=""
+                        class="form-control form-control-sm"
+                        formControlName="os_password"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <!-- SERVER (Software) CREDENTIALS -->
+                <div class="col-sm-12 col-md-4 border rounded">
+                  <div class="col-12">
+                    <h3 class="font-font-large-1 text-center text-info">
+                      Server <small>(Software)</small> Credentials
+                    </h3>
+                  </div>
+                  <!-- SERVER LOGIN -->
+                  <div class="col-12">
+                    <div class="form-group mb-2">
+                      <label for="server_login">Login</label>
+                      <input
+                        type="text"
+                        placeholder=""
+                        class="form-control form-control-sm"
+                        formControlName="server_login"
+                      />
+                    </div>
+                  </div>
+                  <!-- SERVER PASSWORD -->
+                  <div class="col-12">
+                    <div class="form-group mb-2">
+                      <label for="server_password">Password</label>
+                      <input
+                        type="text"
+                        placeholder=""
+                        class="form-control form-control-sm"
+                        formControlName="server_password"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Bottom Section -->
+              <div class="form-row col-12">
+                <!-- NOTES -->
+                <div class="col-12">
+                  <div class="form-group mb-2">
+                    <label for="notes">Notes</label>
+                    <textarea
+                      type="text"
+                      placeholder=""
+                      class="form-control form-control-lg"
+                      formControlName="notes"
+                    ></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </mat-dialog-content>
+    <!-- Action Buttons -->
+    <mat-dialog-actions class="d-flex justify-content-center">
+      <div class="form-row">
+        <!-- SAVE BUTTON -->
+        <div class="col-6 d-flex justify-content-end">
+          <button
+            type="button"
+            class="btn btn-primary"
+            [disabled]="myForm.invalid"
+            (click)="Submit()"
+          >
+            <i class="ft-check-square mr-1"></i>Save
+          </button>
+        </div>
+        <!-- CANCEL BUTTON -->
+        <div class="col-6 d-flex justify-content-start">
+          <button type="button" class="btn btn-secondary" (click)="Cancel()">
+            <i class="ft-x mr-1"></i>Cancel
+          </button>
+        </div>
+      </div>
+    </mat-dialog-actions>
+  </div>
+</div>

@@ -1,0 +1,125 @@
+<div class="row">
+  <div class="card">
+    <div class="card-content">
+      <div class="card-body">
+        <div class="table-responsive">
+          <mtx-grid
+            [data]="dataSource?.data"
+            #adjustmentTable
+            [columns]="displayedColumns"
+            [showToolbar]="true"
+            [toolbarTemplate]="toolbarButtons"
+            [columnHideable]="columnHideable"
+            [columnHideableChecked]="columnHideableChecked"
+            [columnMovable]="columnMovable"
+            (columnChange)="log($event)"
+            [showColumnMenuButton]="true"
+            [showColumnMenuHeader]="true"
+            [columnMenuHeaderText]="'Show/Hide Columns'"
+            [ngClass]="'table table-hover'"
+            [pageSize]="10"
+            [loading]="isLoading"
+            [pageSizeOptions]="[10]"
+            [loading]="isLoading"
+            [cellTemplate]="{
+              Action: actionTpl,
+              status: statusTpl
+            }"
+            (rowClick)="current_item_id = $event?.rowData?.id"
+            [rowClassFormatter]="rowClassFormatter"
+          >
+          </mtx-grid>
+
+          <!-- Toolbar Template -->
+          <ng-template #toolbarButtons>
+            <label class="font-medium-3 d-inline-block toolbaritem">
+              Line Items : <span>{{ total_line_items }}</span>
+            </label>
+            <div class="d-inline-block toolbaritem">
+              <button
+                *ngIf="
+                  (user?.role === 'Admin' || user?.role === 'Manager') &&
+                  current_wh_order_id != 0
+                "
+                type="button"
+                class="btn btn-sm btn-outline-primary mr-1 mb-1"
+                [disabled]="user?.role !== 'Admin' && user?.role !== 'Manager'"
+                (click)="
+                  openDialog('Add', { wh_order_id: current_wh_order_id })
+                "
+              >
+                Add Item
+              </button>
+              <button
+                type="button"
+                class="btn btn-sm btn-outline-primary mr-1 mb-1"
+                (click)="reset()"
+              >
+                Reset
+              </button>
+            </div>
+            <fieldset class="d-inline-block toolbaritem">
+              <input
+                id="ngx-MultiPurposeFilter-ref"
+                class="form-control form-action-right"
+                type="text"
+                placeholder="Filter ..."
+                (keyup)="applyFilter($event)"
+                [(ngModel)]="filter"
+                #input
+              />
+            </fieldset>
+          </ng-template>
+
+          <!-- Action Column Template -->
+          <ng-template
+            #actionTpl
+            let-adjustment
+            let-index="index"
+            let-col="colDef"
+          >
+            <div class="btn-group">
+              <button
+                type="button"
+                class="btn btn-sm btn-outline-info mr-1"
+                (click)="openDialog('edit', { id: adjustment.id })"
+                *ngIf="user.role === 'Admin' || user?.role === 'Manager'"
+              >
+                Edit
+              </button>
+              <button
+                type="button"
+                class="btn btn-sm btn-outline-danger mr-1"
+                (click)="openDialog('delete', { id: adjustment.id })"
+                *ngIf="user.role === 'Admin'"
+              >
+                Delete
+              </button>
+            </div>
+          </ng-template>
+
+          <!-- Order Status Column Template -->
+          <ng-template
+            #statusTpl
+            let-adjustment
+            let-index="index"
+            let-col="colDef"
+            class=""
+          >
+            <div
+              class="text-center"
+              [ngClass]="{
+                ' bg-light-danger': adjustment?.status === 'Created',
+                ' bg-light-success': adjustment?.status === 'Complete'
+              }"
+            >
+              <p>
+                {{ adjustment.status }}
+              </p>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

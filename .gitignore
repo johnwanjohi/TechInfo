@@ -1,0 +1,8 @@
+# Google App Engine generated folder
+appengine-generated/
+node_modules/
+.angular/
+dist/
+e2e/
+.idea/
+src/environments/environment.ts

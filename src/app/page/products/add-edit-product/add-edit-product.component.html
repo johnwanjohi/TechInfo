@@ -1,0 +1,186 @@
+<div class="col-12">
+  <div class="card-dialog">
+    <div
+      class="card-header cursor-move"
+      cdkDrag
+      cdkDragRootElement=".cdk-overlay-pane"
+      cdkDragHandle
+    >
+      <h4 class="card-title">
+        {{ action.charAt(0).toUpperCase() + action.slice(1) }} Product:
+      </h4>
+    </div>
+    <div class="card-content">
+      <div class="card-body">
+        <form [formGroup]="myForm">
+          <div class="form-row">
+            <div class="col-md-4 col-12">
+              <div
+                class="form-group"
+                [formGroup]="myForm"
+                *ngIf="listOfBrands as brands"
+              >
+                <label for="brand_id">Brand</label>
+                <ng-select
+                  #brands
+                  [items]="brands"
+                  bindLabel="brand"
+                  bindValue="id"
+                  formControlName="brand_id"
+                  placeholder="Select brand"
+                  [(ngModel)]="selected_brand"
+                  [ngModelOptions]="{ standalone: true }"
+                >
+                </ng-select>
+                <small
+                  class="form-text text-muted danger"
+                  *ngIf="myForm.controls['brand_id'].hasError('required')"
+                >
+                  required
+                </small>
+              </div>
+            </div>
+            <div class="col-md-4 col-12">
+              <div
+                class="form-group"
+                [formGroup]="myForm"
+                *ngIf="listOfCategories as categories"
+              >
+                <label for="category_id">Category</label>
+                <ng-select
+                  #categories
+                  [items]="categories"
+                  bindLabel="category"
+                  bindValue="id"
+                  formControlName="category_id"
+                  placeholder="Select category"
+                  [(ngModel)]="selected_category"
+                  [ngModelOptions]="{ standalone: true }"
+                  (ngModelChange)="getTypes()"
+                >
+                </ng-select>
+                <small
+                  class="form-text text-muted danger"
+                  *ngIf="myForm.controls['category_id'].hasError('required')"
+                >
+                  required
+                </small>
+              </div>
+            </div>
+            <div class="col-md-4 col-12">
+              <div
+                class="form-group"
+                [formGroup]="myForm"
+                *ngIf="listOfTypes as types"
+              >
+                <label for="type_id">Type</label>
+                <ng-select
+                  #types
+                  [items]="types"
+                  bindLabel="type"
+                  bindValue="id"
+                  formControlName="type_id"
+                  placeholder="Select type"
+                  [(ngModel)]="selected_type"
+                  [ngModelOptions]="{ standalone: true }"
+                >
+                </ng-select>
+                <small
+                  class="form-text text-muted danger"
+                  *ngIf="myForm.controls['type_id'].hasError('required')"
+                >
+                  required
+                </small>
+              </div>
+            </div>
+            <div class="col-md-6 col-12">
+              <div class="form-group mb-2">
+                <label for="product">Product</label>
+                <input
+                  type="text"
+                  placeholder=""
+                  class="form-control"
+                  formControlName="product"
+                />
+                <small
+                  class="form-text text-muted danger"
+                  *ngIf="myForm.controls['product'].hasError('required')"
+                >
+                  required
+                </small>
+              </div>
+            </div>
+            <div class="col-md-6 col-12">
+              <div class="form-group mb-2">
+                <label for="partnumber">Part Number</label>
+                <input
+                  type="text"
+                  placeholder=""
+                  class="form-control"
+                  formControlName="partnumber"
+                  [value]="myForm.get('partnumber').value | uppercase"
+                />
+                <small
+                  class="form-text text-muted danger"
+                  *ngIf="myForm.controls['partnumber'].hasError('required')"
+                >
+                  required
+                </small>
+              </div>
+            </div>
+            <div class="col-md-12 col-12">
+              <div class="form-group mb-2">
+                <label for="description">Description</label>
+                <textarea
+                  type="text"
+                  placeholder=""
+                  class="form-control"
+                  formControlName="description"
+                ></textarea>
+              </div>
+            </div>
+            <div class="col-md-12 col-12">
+              <div class="form-group mb-2">
+                <label for="link">Link</label>
+                <textarea
+                  type="url"
+                  placeholder=""
+                  class="form-control"
+                  formControlName="link"
+                ></textarea>
+              </div>
+            </div>
+            <div class="col-md-12 col-12">
+              <div class="form-group mb-2">
+                <label for="notes">Notes</label>
+                <textarea
+                  type="text"
+                  placeholder=""
+                  class="form-control"
+                  formControlName="notes"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+        </form>
+        <div class="form-row">
+          <div class="col-6 d-flex justify-content-end">
+            <button
+              type="button"
+              class="btn btn-primary"
+              [disabled]="myForm.invalid"
+              (click)="Submit()"
+            >
+              <i class="ft-check-square mr-1"></i>Save
+            </button>
+          </div>
+          <div class="col-6 d-flex justify-content-start">
+            <button type="button" class="btn btn-secondary" (click)="Cancel()">
+              <i class="ft-x mr-1"></i>Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

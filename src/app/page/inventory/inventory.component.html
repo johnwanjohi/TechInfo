@@ -1,0 +1,42 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card-deck-wrapper">
+      <div class="card-deck justify-content-center">
+        <div class="col-xl-4 col-sm-12">
+          <div class="card overflow-hidden">
+            <app-brands #brands></app-brands>
+          </div>
+        </div>
+        <div class="col-xl-4 col-sm-12">
+          <div class="card overflow-hidden">
+            <app-categories #categories></app-categories>
+          </div>
+        </div>
+        <div class="col-xl-4 col-sm-12">
+          <div class="card overflow-hidden">
+            <app-types #types></app-types>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-12">
+    <div class="card-deck-wrapper">
+      <div class="card-deck justify-content-center">
+        <div class="col-12">
+          <div class="card overflow-hidden">
+            <app-products
+              #products
+              (resetBrands)="resetBrands()"
+              (resetCategories)="resetCategories()"
+              (resetTypes)="resetTypes()"
+            ></app-products>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<router-outlet></router-outlet>

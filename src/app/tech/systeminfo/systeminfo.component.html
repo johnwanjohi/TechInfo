@@ -1,0 +1,115 @@
+<div class="row">
+  <!-- LEFT SIDE -->
+  <div class="col-lg-12 col-sm-12">
+    <!-- SYSTEM SITE SELECT -->
+
+    <div class="card-body">
+      <div class="table-responsive">
+        <mtx-grid
+          [data]="dataSource?.data"
+          #sitesInfoTable
+          [columns]="displayedColumns"
+          [showToolbar]="true"
+          [toolbarTemplate]="toolbarButtons"
+          [columnHideable]="columnHideable"
+          [columnHideableChecked]="columnHideableChecked"
+          [columnMovable]="columnMovable"
+          (columnChange)="log($event)"
+          [showColumnMenuButton]="true"
+          [showColumnMenuHeader]="true"
+          [columnMenuHeaderText]="'Show/Hide Columns'"
+          [ngClass]="'table table-hover'"
+          [pageSize]="1"
+          [pageSizeOptions]="[1]"
+          [loading]="isLoading"
+          [cellTemplate]="{}"
+          (rowClick)="setSystenInfoSite($event?.rowData?.id)"
+          [rowClassFormatter]="rowClassFormatter"
+        >
+        </mtx-grid>
+
+        <!-- Toolbar Template -->
+        <ng-template #toolbarButtons>
+          <label class="font-medium-3 d-inline-block toolbaritem">
+            Select Site:
+          </label>
+          <div class="d-inline-block toolbaritem">
+            <button
+              type="button"
+              class="btn btn-sm btn-outline-primary mr-1 mb-1"
+              (click)="reset()"
+            >
+              Reset
+            </button>
+          </div>
+          <fieldset class="d-inline-block toolbaritem">
+            <input
+              #input
+              type="text"
+              placeholder="Filter ..."
+              id="ngx-MultiPurposeFilter-ref"
+              class="form-control form-action-right"
+              (keyup)="applyFilter($event)"
+              [(ngModel)]="filter"
+            />
+          </fieldset>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+
+  <!-- SYSTEM NAVIGATION TABS -->
+  <div class="col-lg-12 col-sm-12">
+    <ul
+      ngbNav
+      #nav="ngbNav"
+      [(activeId)]="active_tab"
+      (activeIdChange)="onNavChange($event)"
+      class="nav nav-pills nav-fill mt-2"
+    >
+      <li ngbNavItem [ngbNavItem]="1" class="nav-item">
+        <a ngbNavLink class="nav-link">Summary</a>
+        <ng-template ngbNavContent *ngIf="current_site !== 0">
+          <app-system-summary></app-system-summary>
+        </ng-template>
+      </li>
+      <li ngbNavItem [ngbNavItem]="2" class="nav-item">
+        <a ngbNavLink class="nav-link">CCTV</a>
+        <ng-template ngbNavContent *ngIf="current_site !== 0">
+          <app-system-cctv></app-system-cctv>
+        </ng-template>
+      </li>
+      <li ngbNavItem [ngbNavItem]="3" class="nav-item">
+        <a ngbNavLink class="nav-link">ACCESS</a>
+        <ng-template ngbNavContent *ngIf="current_site !== 0">
+          <app-system-access></app-system-access>
+        </ng-template>
+      </li>
+      <li ngbNavItem [ngbNavItem]="4" class="nav-item">
+        <a ngbNavLink class="nav-link">INTRUSION</a>
+        <ng-template ngbNavContent *ngIf="current_site !== 0">
+          <app-system-burglary></app-system-burglary>
+        </ng-template>
+      </li>
+      <li ngbNavItem [ngbNavItem]="5" class="nav-item">
+        <a ngbNavLink class="nav-link">INTERCOM</a>
+        <ng-template ngbNavContent *ngIf="current_site !== 0">
+          <app-system-intercom></app-system-intercom>
+        </ng-template>
+      </li>
+      <li ngbNavItem [ngbNavItem]="6" class="nav-item">
+        <a ngbNavLink class="nav-link">NETWORK</a>
+        <ng-template ngbNavContent *ngIf="current_site !== 0">
+          <app-system-network></app-system-network>
+        </ng-template>
+      </li>
+      <li ngbNavItem [ngbNavItem]="7" class="nav-item">
+        <a ngbNavLink class="nav-link">OTHER</a>
+        <ng-template ngbNavContent *ngIf="current_site !== 0">
+          <app-system-other></app-system-other>
+        </ng-template>
+      </li>
+    </ul>
+    <div [ngbNavOutlet]="nav" class="mt-2"></div>
+  </div>
+</div>

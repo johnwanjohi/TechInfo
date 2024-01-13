@@ -1,0 +1,177 @@
+<div class="col-lg-12 col-12">
+  <div class="card-dialog">
+    <div
+      class="card-header cursor-move"
+      cdkDrag
+      cdkDragRootElement=".cdk-overlay-pane"
+      cdkDragHandle
+    >
+      <h4 class="card-title">
+        {{ selectedOrderTypeName || "" }} Return Order Item Details:
+      </h4>
+    </div>
+    <div class="card-content">
+      <div class="card-body">
+        <form [formGroup]="myForm">
+          <div class="form-row" *ngIf="listOfSuppliers as suppliers">
+            <div class="col-md-12 col-6">
+              <div class="form-group mb-2">
+                <label>Supplier</label>
+                <ng-select
+                  #suppliers
+                  placeholder="select Supplier"
+                  name="supplier_id"
+                  formControlName="supplier_id"
+                  [items]="suppliers"
+                  bindLabel="name"
+                  bindValue="id"
+                  [(ngModel)]="selected_supplier"
+                ></ng-select>
+                <small
+                  class="form-text text-muted danger"
+                  *ngIf="myForm.controls['supplier_id'].hasError('required')"
+                >
+                  Supplier name is <strong>required</strong>
+                </small>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="col-md-12 col-12">
+              <div class="form-group mb-2">
+                <label for="type">Order Number</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="supplier_order_number"
+                  placeholder="Ex. Suppler Order Number"
+                  [(ngModel)]="current_supplier_order_number"
+                />
+                <small
+                  class="form-text text-muted danger"
+                  *ngIf="
+                    myForm.controls['supplier_order_number'].hasError(
+                      'required'
+                    )
+                  "
+                >
+                  Order Number is <strong>required</strong>
+                </small>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row" *ngIf="listOfProducts as listofproducts">
+            <div class="col-md-12 col-12">
+              <div class="form-group mb-2">
+                <label for="product_id">Products</label>
+                <ng-select
+                  #product_id
+                  placeholder="select product"
+                  name="product_id"
+                  formControlName="product_id"
+                  [items]="listofproducts"
+                  bindLabel="product"
+                  bindValue="id"
+                  [(ngModel)]="selected_product_id"
+                  (change)="getAvailableQty($event)"
+                ></ng-select>
+                <small
+                  class="form-text text-muted danger"
+                  *ngIf="myForm.controls['product_id'].hasError('required')"
+                >
+                  Product is <strong>required</strong>
+                </small>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="col-md-12 col-12">
+              <div class="form-group mb-2">
+                <label for="available_qty">Qty Available </label>
+                <span id="available_qty" type="number" class="form-control">
+                  {{ available_qty }}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="col-md-12 col-12">
+              <div class="form-group mb-2">
+                <label for="return_qty">Qty Returned</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  formControlName="return_qty"
+                  placeholder="Ex. Qty Returned"
+                />
+                <small
+                  class="form-text text-muted danger"
+                  *ngIf="myForm.controls['return_qty'].hasError('required')"
+                >
+                  Returned QTY is <strong>required</strong>
+                </small>
+                <small
+                  class="form-text text-muted danger"
+                  *ngIf="myForm.controls['return_qty'].hasError('max')"
+                >
+                  Returned QTY
+                  <strong>should not exceed {{ available_qty }}</strong>
+                </small>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="col-md-12 col-12">
+              <div class="form-group mb-2">
+                <label for="notes">Notes</label>
+                <textarea
+                  type="text"
+                  class="form-control"
+                  formControlName="notes"
+                  placeholder=""
+                ></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div fxLayout="row nowrap" class="form-group">
+            <div>
+              999999999999999999
+              {{myForm.value | json}}
+              <button
+                type="button"
+                class="btn btn-primary mr-2"
+                [disabled]="myForm.invalid"
+                (click)="submit()"
+                *ngIf="myForm.value?.id === 0"
+              >
+                <i class="ft-check-square mr-1"></i>Save
+              </button>
+              <button
+                type="button"
+                class="btn btn-primary mr-2"
+                [disabled]="myForm.invalid"
+                (click)="submit()"
+                *ngIf="myForm.value?.id !== 0 && action === 'edit'"
+              >
+                <i class="ft-check-square mr-1"></i>Save
+              </button>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <button
+                type="button"
+                class="btn btn-secondary"
+                (click)="Cancel()"
+              >
+                <i class="ft-x mr-1"></i>Cancel
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

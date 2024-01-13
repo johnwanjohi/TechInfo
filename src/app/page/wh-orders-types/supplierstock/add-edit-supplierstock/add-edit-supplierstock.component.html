@@ -1,0 +1,181 @@
+<div class="col-12">
+  <div class="card-dialog">
+    <div
+      class="card-header cursor-move"
+      cdkDrag
+      cdkDragRootElement=".cdk-overlay-pane"
+      cdkDragHandle
+    >
+      <h4 class="card-title">
+        {{ action.charAt(0).toUpperCase() + action.slice(1) }} Line Item:
+      </h4>
+    </div>
+    <div class="card-content">
+      <div class="card-body">
+        <form [formGroup]="myForm">
+          <div class="form-row">
+            <div class="col-md-6 col-12">
+              <div
+                class="form-group mb-2"
+                [formGroup]="myForm"
+                *ngIf="listOfSuppliers as suppliers"
+              >
+                <label>Supplier</label>
+                <ng-select
+                  #suppliers
+                  bindValue="id"
+                  bindLabel="name"
+                  name="supplier_id"
+                  [items]="suppliers"
+                  formControlName="supplier_id"
+                  placeholder="Select Supplier"
+                  [(ngModel)]="selected_supplier"
+                  [ngModelOptions]="{ standalone: true }"
+                >
+                </ng-select>
+                <small
+                  class="form-text text-muted danger"
+                  *ngIf="myForm.controls['supplier_id'].hasError('required')"
+                >
+                  Supplier name is <strong>required</strong>
+                </small>
+              </div>
+            </div>
+
+            <div class="col-md-6 col-12">
+              <div class="form-group mb-2">
+                <label for="supplier_order_number">Order Number</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  [defaultValue]="'N/A'"
+                  placeholder="Suppler Order Number"
+                  formControlName="supplier_order_number"
+                />
+                <small
+                  class="form-text text-muted danger"
+                  *ngIf="
+                    myForm.controls['supplier_order_number'].hasError(
+                      'required'
+                    )
+                  "
+                >
+                  Order Number is <strong>required</strong>
+                </small>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="col-md-12 col-12">
+              <div
+                class="form-group mb-2"
+                [formGroup]="myForm"
+                *ngIf="listOfProducts as listofproducts"
+              >
+                <label for="product_id">Products</label>
+                <ng-select
+                  #product_id
+                  bindValue="id"
+                  name="product_id"
+                  bindLabel="partnumber"
+                  [items]="listofproducts"
+                  placeholder="Select product"
+                  formControlName="product_id"
+                  [(ngModel)]="selected_product_id"
+                  [readonly]="action === 'edit'"
+                ></ng-select>
+                <small
+                  class="form-text text-muted danger"
+                  *ngIf="myForm.controls['product_id'].hasError('required')"
+                >
+                  Product is <strong>required</strong>
+                </small>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="col-md-6 col-6">
+              <div class="form-group mb-2">
+                <label for="ordered_qty">Ordered Qty</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  (blur)="validateReceivedQty()"
+                  formControlName="ordered_qty"
+                  placeholder=" Ordered Qty "
+                />
+                <small
+                  class="form-text text-muted danger"
+                  *ngIf="myForm.controls['ordered_qty'].hasError('required')"
+                >
+                  Ordered QTY is <strong>required</strong>
+                </small>
+              </div>
+            </div>
+            <div class="col-md-6 col-6">
+              <div class="form-group mb-2">
+                <label for="received_qty">Received Qty</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  formControlName="received_qty"
+                  placeholder=" Received Qty "
+                  (blur)="validateReceivedQty()"
+                />
+
+                <small
+                  class="form-text text-muted danger"
+                  *ngIf="myForm.controls['received_qty'].hasError('max')"
+                >
+                  Received Qty
+                  <strong
+                    >should not exceed
+                    {{ myForm.controls["ordered_qty"].value }}</strong
+                  >
+                </small>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="col-md-12 col-12">
+              <div class="form-group mb-2">
+                <label for="notes">Notes</label>
+                <textarea
+                  type="text"
+                  placeholder=""
+                  class="form-control"
+                  formControlName="notes"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="col-6 d-flex justify-content-end">
+              <!--              {{invalidControls | json}}-->
+              <button
+                type="button"
+                class="btn btn-primary"
+                [disabled]="myForm.invalid"
+                (click)="Submit()"
+              >
+                <i class="ft-check-square mr-1"></i>Save
+              </button>
+            </div>
+            <div class="col-6 d-flex justify-content-start">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                (click)="Cancel()"
+              >
+                <i class="ft-x mr-1"></i>Cancel
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

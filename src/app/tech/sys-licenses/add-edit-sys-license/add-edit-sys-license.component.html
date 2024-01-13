@@ -1,0 +1,147 @@
+<div class="col-12">
+  <div class="card-dialog">
+    <div
+      class="card-header cursor-move"
+      cdkDrag
+      cdkDragRootElement=".cdk-overlay-pane"
+      cdkDragHandle
+    >
+      <h4 mat-dialog-title class="card-title">
+        {{ action.charAt(0).toUpperCase() + action.slice(1) }} License for
+        <small> {{ current_system_type }} System:</small>
+      </h4>
+    </div>
+    <mat-dialog-content>
+      <div class="card-content">
+        <div class="card-body">
+          <form [formGroup]="myForm">
+            <div class="row">
+              <!-- BRAND -->
+              <div class="col-sm-12 col-md-6">
+                <div class="form-group" *ngIf="listOfBrands as brands">
+                  <label for="brand_id">Brand</label>
+                  <ng-select
+                    #brand_id
+                    [items]="brands"
+                    bindLabel="brand"
+                    bindValue="id"
+                    formControlName="brand_id"
+                    placeholder="Select brand"
+                  >
+                  </ng-select>
+                  <small
+                    class="form-text text-muted danger"
+                    *ngIf="myForm.controls['brand_id'].hasError('required')"
+                  >
+                    required
+                  </small>
+                </div>
+              </div>
+              <!-- TYPE -->
+              <div class="col-sm-12 col-md-6">
+                <div class="form-group mb-2">
+                  <label for="type">Type</label>
+                  <input
+                    type="text"
+                    placeholder=""
+                    class="form-control"
+                    formControlName="type"
+                  />
+                  <small
+                    class="form-text text-muted danger"
+                    *ngIf="myForm.controls['type'].hasError('required')"
+                  >
+                    required
+                  </small>
+                </div>
+              </div>
+            </div>
+            <!-- LICENCE -->
+            <div class="row">
+              <div class="col-12">
+                <div class="form-group mb-2">
+                  <label for="license">License</label>
+                  <input
+                    type="text"
+                    placeholder=""
+                    class="form-control"
+                    formControlName="license"
+                    [value]="myForm.get('license').value | uppercase"
+                  />
+                  <small
+                    class="form-text text-muted danger"
+                    *ngIf="myForm.controls['license'].hasError('required')"
+                  >
+                    required
+                  </small>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <!-- QUANTITY -->
+              <div class="col-sm-12 col-md-6">
+                <div class="form-group mb-2">
+                  <label for="devices_qty">Devices Qty</label>
+                  <input
+                    type="number"
+                    placeholder=""
+                    class="form-control"
+                    formControlName="devices_qty"
+                  />
+                </div>
+              </div>
+              <!-- ACTIVATION DATE -->
+              <div class="col-sm-12 col-md-6">
+                <div class="form-group mb-2">
+                  <label for="activation_date">Activation Date</label>
+                  <input
+                    type="date"
+                    placeholder="Activation Date"
+                    class="form-control"
+                    formControlName="activation_date"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <!-- NOTES -->
+              <div class="col-12">
+                <div class="form-group mb-2">
+                  <label for="notes">Notes</label>
+                  <textarea
+                    type="text"
+                    placeholder=""
+                    class="form-control form-control-lg"
+                    formControlName="notes"
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </mat-dialog-content>
+    <!-- Action Buttons -->
+    <mat-dialog-actions class="d-flex justify-content-center">
+      <div class="form-row">
+        <!-- SAVE BUTTON -->
+        <div class="col-6 d-flex justify-content-end">
+          <button
+            type="button"
+            class="btn btn-primary"
+            [disabled]="myForm.invalid"
+            (click)="Submit()"
+          >
+            <i class="ft-check-square mr-1"></i>Save
+          </button>
+        </div>
+        <!-- CANCEL BUTTON -->
+        <div class="col-6 d-flex justify-content-start">
+          <button type="button" class="btn btn-secondary" (click)="Cancel()">
+            <i class="ft-x mr-1"></i>Cancel
+          </button>
+        </div>
+      </div>
+    </mat-dialog-actions>
+  </div>
+</div>

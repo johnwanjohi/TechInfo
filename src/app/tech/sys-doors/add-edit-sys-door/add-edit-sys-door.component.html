@@ -1,0 +1,109 @@
+<div class="col-12">
+  <div class="card-dialog">
+    <div
+      class="card-header cursor-move"
+      cdkDrag
+      cdkDragRootElement=".cdk-overlay-pane"
+      cdkDragHandle
+    >
+      <h4 mat-dialog-title class="card-title">
+        {{ action.charAt(0).toUpperCase() + action.slice(1) }} Door
+      </h4>
+    </div>
+    <mat-dialog-content>
+      <div class="card-content">
+        <div class="card-body">
+          <form [formGroup]="myForm">
+            <div class="form-row col-12">
+              <!-- NAME -->
+              <div class="col-12">
+                <div class="form-group mb-2">
+                  <label for="name">Name</label>
+                  <input
+                    type="text"
+                    name="name"
+                    placeholder=""
+                    class="form-control"
+                    formControlName="name"
+                  />
+                  <small
+                    class="form-text text-muted danger"
+                    *ngIf="myForm.controls['name'].hasError('required')"
+                  >
+                    required
+                  </small>
+                </div>
+              </div>
+              <!-- PANEL -->
+              <div class="col-12">
+                <div class="form-group mb-2">
+                  <label for="panel">Panel</label>
+                  <input
+                    type="text"
+                    name="panel"
+                    placeholder=""
+                    class="form-control"
+                    formControlName="panel"
+                  />
+                  <small
+                    class="form-text text-muted danger"
+                    *ngIf="myForm.controls['panel'].hasError('required')"
+                  >
+                    required
+                  </small>
+                </div>
+              </div>
+              <!-- LABEL -->
+              <div class="col-12">
+                <div class="form-group mb-2">
+                  <label for="label">Label</label>
+                  <input
+                    type="text"
+                    name="label"
+                    placeholder=""
+                    class="form-control"
+                    formControlName="label"
+                  />
+                </div>
+              </div>
+              <!-- NOTES -->
+              <div class="col-12">
+                <div class="form-group mb-2">
+                  <label for="notes">Notes</label>
+                  <textarea
+                    type="text"
+                    placeholder=""
+                    class="form-control form-control-lg"
+                    formControlName="notes"
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </mat-dialog-content>
+    <!-- Action Buttons -->
+    <mat-dialog-actions class="d-flex justify-content-center">
+      <div class="form-row">
+        <!-- SAVE BUTTON -->
+        <div class="col-6 d-flex justify-content-end">
+          <button
+            type="button"
+            class="btn btn-primary"
+            [disabled]="myForm.invalid"
+            (click)="Submit()"
+          >
+            <i class="ft-check-square mr-1"></i>Save
+          </button>
+        </div>
+        <!-- CANCEL BUTTON -->
+        <div class="col-6 d-flex justify-content-start">
+          <button type="button" class="btn btn-secondary" (click)="Cancel()">
+            <i class="ft-x mr-1"></i>Cancel
+          </button>
+        </div>
+      </div>
+    </mat-dialog-actions>
+  </div>
+</div>

@@ -1,0 +1,114 @@
+<div class="row">
+  <div class="card">
+    <div class="card-content">
+      <div class="card-body">
+        <div class="table-responsive">
+          <mtx-grid
+            [data]="dataSource?.data"
+            #productsTable
+            [columns]="displayedColumns"
+            [showToolbar]="true"
+            [toolbarTitle]="'Products'"
+            [toolbarTemplate]="toolBarButtons"
+            [columnHideable]="columnHideable"
+            [columnHideableChecked]="columnHideableChecked"
+            [columnMovable]="columnMovable"
+            (columnChange)="log($event)"
+            [showColumnMenuButton]="true"
+            [showColumnMenuHeader]="true"
+            [columnMenuHeaderText]="'Columns'"
+            [ngClass]="'table table-hover'"
+            [pageSize]="10"
+            [pageSizeOptions]="[10]"
+            [loading]="isLoading"
+            [cellTemplate]="{ Action: actionTpl, link: linkTpl }"
+            (rowClick)="setProduct($event?.rowData?.id)"
+            [rowClassFormatter]="rowClassFormatter"
+          >
+          </mtx-grid>
+
+          <!-- Toolbar Template -->
+          <ng-template #toolBarButtons>
+            <label class="font-medium-3 d-inline-block toolbaritem">
+              Products
+            </label>
+            <div class="d-inline-block toolbaritem">
+              <button
+                *ngIf="user?.role === 'Admin' || user?.role === 'Manager'"
+                type="button"
+                class="btn btn-sm btn-outline-primary mr-1 mb-1"
+                (click)="openDialog('add', {})"
+              >
+                Add Product
+              </button>
+              <button
+                type="button"
+                class="btn btn-sm btn-outline-primary mr-1 mb-1"
+                (click)="reset()"
+              >
+                Reset
+              </button>
+            </div>
+            <fieldset class="d-inline-block toolbaritem">
+              <input
+                id="ngx-MultiPurposeFilter-ref"
+                class="form-control form-action-right"
+                type="text"
+                placeholder="Filter ..."
+                (keyup)="applyFilter($event)"
+                [(ngModel)]="filter"
+                #input
+              />
+            </fieldset>
+          </ng-template>
+
+          <!-- Action Column Template -->
+          <ng-template
+            #actionTpl
+            let-product
+            let-index="index"
+            let-col="colDef"
+          >
+            <div class="btn-group">
+              <button
+                type="button"
+                class="btn btn-sm btn-outline-info mr-1"
+                (click)="openDialog('edit', { id: product.id })"
+                *ngIf="user.role === 'Admin' || user?.role === 'Manager'"
+              >
+                Edit
+              </button>
+              <button
+                type="button"
+                class="btn btn-sm btn-outline-danger mr-1"
+                (click)="openDialog('delete', { id: product.id })"
+                *ngIf="user.role === 'Admin'"
+              >
+                Delete
+              </button>
+            </div>
+          </ng-template>
+
+          <!-- Link Column Template -->
+          <ng-template #linkTpl let-product let-index="index" let-col="colDef">
+            <a
+              class="text-info"
+              *ngIf="product.link?.length !== 0 && product?.link != null"
+              [ngClass]="{ link: product.link?.length !== 0 }"
+              (click)="goToLink(product.link)"
+            >
+              Link
+            </a>
+            <a
+              class="text-muted"
+              *ngIf="product.link?.length == 0"
+              [ngClass]="{ disable: product.link?.length == 0 }"
+            >
+              Link
+            </a>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

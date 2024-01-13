@@ -1,0 +1,119 @@
+<div class="col-lg-12 col-12">
+  <div class="card-dialog">
+    <div
+      class="card-header cursor-move"
+      cdkDrag
+      cdkDragRootElement=".cdk-overlay-pane"
+      cdkDragHandle
+    >
+      <h4 class="card-title">
+        {{ selectedOrderTypeName || "" }} Van Return Item Details:
+      </h4>
+    </div>
+    <div class="card-content">
+      <div class="card-body">
+        <form [formGroup]="myForm">
+          <div class="form-row" *ngIf="listOfProducts as listofproducts">
+            <div class="col-md-12 col-12">
+              <div class="form-group mb-2">
+                <label for="product_id">Products</label>
+                <ng-select
+                  #product_id
+                  placeholder="select product"
+                  name="product_id"
+                  formControlName="product_id"
+                  [items]="listofproducts"
+                  bindLabel="partnumber"
+                  bindValue="id"
+                  [(ngModel)]="selected_product_id"
+                ></ng-select>
+                <small
+                  class="form-text text-muted danger"
+                  *ngIf="myForm.controls['product_id'].hasError('required')"
+                >
+                  Product is <strong>required</strong>
+                </small>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="col-md-12 col-12">
+              <div class="form-group mb-2">
+                <label for="return_qty">QTY Returned</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  formControlName="return_qty"
+                  placeholder="Ex. QTY Issued"
+                />
+                <small
+                  class="form-text text-muted danger"
+                  *ngIf="myForm.controls['return_qty'].hasError('required')"
+                >
+                  Return QTY is <strong>required</strong>
+                </small>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="col-md-12 col-12">
+              <div class="form-group mb-2">
+                <label for="return_qty">Van</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="van"
+                  placeholder="Ex. Van"
+                />
+                <small
+                  class="form-text text-muted danger"
+                  *ngIf="myForm.controls['van'].hasError('required')"
+                >
+                  Van is <strong>required</strong>
+                </small>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="col-md-12 col-12">
+              <div class="form-group mb-2">
+                <label for="notes">Notes</label>
+                <textarea
+                  type="text"
+                  class="form-control"
+                  formControlName="notes"
+                  placeholder=""
+                ></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div fxLayout="row nowrap" class="form-group">
+            <div>
+              <button
+                *ngIf="myForm"
+                type="button"
+                class="btn btn-primary mr-2"
+                [disabled]="myForm?.invalid"
+                (click)="submit()"
+                >
+                <i class="ft-check-square mr-1"></i>Save
+              </button>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <button
+                type="button"
+                class="btn btn-secondary"
+                (click)="Cancel()"
+              >
+                <i class="ft-x mr-1"></i>Cancel</button
+              ><br />
+              <!-- {{ invalidControls | json }} -->
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
